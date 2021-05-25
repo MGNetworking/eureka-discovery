@@ -7,7 +7,7 @@ pipeline {
 
     stages {
 
-        stage('Stop service ... '){
+        stage('Stop eureka-service '){
 
             steps{
                 // arrête du service
@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Start service ... '){
+        stage('Start eureka-service '){
 
             steps{
 
