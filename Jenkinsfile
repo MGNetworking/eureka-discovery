@@ -11,7 +11,7 @@ pipeline {
 
             steps{
                 // arrête du service
-                sh """echo max | sudo -S systemctl stop gateway-service"""
+                sh """echo max | sudo -S systemctl stop eureka-service"""
             }
 
         }
@@ -27,11 +27,12 @@ pipeline {
         stage('Start service ... '){
 
             steps{
-                // recherchement des deamons
+
+                // rechargement des deamons
                   sh """echo max | sudo -S systemctl daemon-reload"""
 
                 // lancement du service
-                sh """echo max | sudo -S systemctl start gateway-service"""
+                sh """echo max | sudo -S systemctl start eureka-service"""
             }
 
         }
