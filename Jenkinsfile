@@ -7,7 +7,6 @@ pipeline {
 
     stages {
 
-        // stage for stop service
         stage('Stop eureka-service '){
 
             steps{
