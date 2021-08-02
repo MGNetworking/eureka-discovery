@@ -10,7 +10,7 @@ pipeline {
         stage('Stop eureka-service '){
 
             steps{
-                // arrête du service
+                // stop service
                 sh """echo max | sudo -S systemctl stop eureka-service"""
             }
 
@@ -28,10 +28,10 @@ pipeline {
 
             steps{
 
-                // rechargement des deamons
+                // reload service
                   sh """echo max | sudo -S systemctl daemon-reload"""
 
-                // lancement du service
+                // Run du service
                 sh """echo max | sudo -S systemctl start eureka-service"""
             }
 
@@ -39,7 +39,7 @@ pipeline {
     }
 
     post {
-        // raffraichi le workspace
+        // refresh workspace
         always {
             cleanWs()
         }

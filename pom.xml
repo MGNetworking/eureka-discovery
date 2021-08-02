@@ -27,6 +27,27 @@
         <jar.finalName>${project.name}</jar.finalName>
     </properties>
 
+    <!-- Gestion des profiles -->
+    <profiles>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -44,12 +65,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- deploy tomcat server -->
-        <!--		<dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                    <scope>provided</scope>
-                </dependency>-->
 
     </dependencies>
 
