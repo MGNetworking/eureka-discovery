@@ -34,7 +34,7 @@ public class ConfigurationService {
         param.put("logging level spring controller", environment.getProperty("logging.level.org.springframework.controller"));
         param.put("logging level hibernate", environment.getProperty("logging.level.org.hibernate"));
 
-
+        param.put("management.endpoints.web.exposure.include", environment.getProperty("management.endpoints.web.exposure.include"));
 
 
         return param;
