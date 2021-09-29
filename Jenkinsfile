@@ -7,16 +7,16 @@ pipeline {
 
     stages {
 
-        stage('Stop eureka-service '){
+        stage('Stop eureka-service'){
 
             steps{
                 // stop service
-                sh """echo max | sudo -S systemctl stop eureka-service"""
+                sh """echo max | sudo -S systemctl stop eureka"""
             }
 
         }
 
-        stage('build ...'){
+        stage('build eureka ...'){
 
             steps{
             sh """mvn -version"""
@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Start eureka-service '){
+        stage('Start eureka'){
 
             steps{
 
@@ -32,7 +32,7 @@ pipeline {
                   sh """echo max | sudo -S systemctl daemon-reload"""
 
                 // Run du service
-                sh """echo max | sudo -S systemctl start eureka-service"""
+                sh """echo max | sudo -S systemctl start eureka"""
             }
 
         }
