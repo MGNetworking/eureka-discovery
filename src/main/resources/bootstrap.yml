@@ -5,7 +5,7 @@
 # ou avec la varible java
 # java -jar -Dspring.profiles.active=dev path-to-file/fichier.jar
 # recherche les fichiers de configuration du micro service
-# Ce qui donnera pour ce micro service avec le profile dev  http://localhost:8088/eureka/dev
+# Ce qui donnera pour ce micro service avec le profile prod  http://localhost:8089/eureka/prod
 spring:
   application:
     name: eureka
