@@ -7,7 +7,7 @@ pipeline {
 
     stages {
 
-        stage('Stop eureka-service'){
+        stage('Stop service eureka'){
 
             steps{
                 // stop service
@@ -16,7 +16,7 @@ pipeline {
 
         }
 
-        stage('build eureka ...'){
+        stage('build service eureka ...'){
 
             steps{
             sh """mvn -version"""
@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Start eureka'){
+        stage('Start service eureka'){
 
             steps{
 
