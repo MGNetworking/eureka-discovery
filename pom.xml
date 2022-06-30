@@ -12,7 +12,7 @@
     </parent>
 
     <packaging>jar</packaging>
-    <name>eureka-discovery</name>
+    <name>ms-eureka</name>
     <groupId>org.ghoverblog.ovh</groupId>
     <artifactId>eureka-discovery</artifactId>
     <version>1.0.0-V</version>
