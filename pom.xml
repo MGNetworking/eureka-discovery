@@ -63,6 +63,9 @@
 
     </dependencies>
 
+    <!--============================= -->
+    <!-- Management                   -->
+    <!--============================= -->
     <dependencyManagement>
         <dependencies>
             <dependency>
