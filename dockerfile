@@ -4,6 +4,8 @@ FROM maven:3.8.5-jdk-8-slim as build
 # Création du répertoire de travail
 WORKDIR /app
 
+ENV NETWORK_MODE=host
+
 COPY src /app/src
 COPY pom.xml /app/pom.xml
 RUN mvn clean test package -Dspring.profiles.active=dev -Dspring-boot.run.jvmArguments=-Dspring.profiles.active=dev

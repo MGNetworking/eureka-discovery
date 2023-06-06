@@ -7,8 +7,8 @@
 # recherche les fichiers de configuration du micro service
 # Ce qui donnera pour ce micro service avec le profile prod  http://localhost:8089/eureka/prod
 spring:
-  application:
-    name: eureka
+  application.name: eureka
+  config:
+    import: configserver:http://localhost:8089
   cloud:
-    config:
-      uri: http://localhost:8089
+    bootstrap.enabled: true
