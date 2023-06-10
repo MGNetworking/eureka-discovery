@@ -3,15 +3,18 @@ FROM maven:3.8.5-jdk-8-slim as build
 
 # Création du répertoire de travail
 WORKDIR /app
-
 COPY src /app/src
 COPY pom.xml /app/pom.xml
 
-ARG CONFIG_SERVICE_URI_DEV
-# variable attendu dans le fichier bootstrap.yml du projet
-ENV CONFIG_SERVICE_URI=$CONFIG_SERVICE_URI_DEV
+# arguement venant du docker compose
+ARG CONFIG_SERVICE_URI_ARG
+ARG env_profile
 
-RUN mvn clean test package -Dspring.profiles.active=dev
+# variable attendu dans le fichier bootstrap.yml du projet
+ENV CONFIG_SERVICE_URI=$CONFIG_SERVICE_URI_ARG
+ENV SPRING_PROFILES_ACTIVE=$env_profile
+
+RUN mvn clean test package
 
 # Image de base pour l'exécution de l'application
 FROM openjdk:8-jdk-alpine
