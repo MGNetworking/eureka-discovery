@@ -3,23 +3,25 @@ version: '3.9'
 services:
   eureka:
     container_name: eureka
+    env_file:
+      - .env
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: dockerfile-DEV
+      args:
+        - CONFIG_SERVICE_URI_DEV=${IP_DEV}
+    image: ms-eureka-service
     ports:
       - "8099:8099"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - spring.config.import=optional:configserver:http://config-service:8089
-
-    #command: ["java", "-jar", "/app.jar"]
+      - CONFIG_SERVICE_URI=${IP_DEV}
 
     networks:
       - spring-network
 
 networks:
   spring-network:
-    name: spring-network
     driver: bridge
 
 # docker-compose up -d

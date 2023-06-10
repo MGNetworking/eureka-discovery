@@ -1,14 +1,14 @@
-########## Localisation du fichier de configuration
-# Par son nom, qui doit ce trouver dans ce fichier imperativement ainsi que
-# par son profile (passe en parametre de la jvm) comme dans cette exemple
-# mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=dev"
-# ou avec la varible java
-# java -jar -Dspring.profiles.active=dev path-to-file/fichier.jar
-# recherche les fichiers de configuration du micro service
-# Ce qui donnera pour ce micro service avec le profile prod  http://localhost:8089/eureka/prod
+# Localisation du fichier de configuration #############################################################################
+# Ce fichier permet de récupérer les properties du projet, sa localisation doit tenir compte de l'environement utilisé
+# Si l'environement utilisé est un conteneur docker l'ip localhost est déconseiller
+# Vous devriez utilise directement l'ip local type 192.168.x.x ou un nom de domaine. Dans le contraire,
+# si le conteneur docker n'a pas correctement configurer l'environement réseau les requêtes localhost
+# seront contenu dans le conteneur.
+# La variable => ${CONFIG_SERVICE_URI} et récupérer dans le docker compose
+########################################################################################################################
 spring:
   application:
     name: eureka
   cloud:
     config:
-      uri: http://localhost:8089
+      uri: ${CONFIG_SERVICE_URI}
