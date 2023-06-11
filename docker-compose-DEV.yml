@@ -10,12 +10,12 @@ services:
       dockerfile: dockerfile-DEV
       args:
         - CONFIG_SERVICE_URI_ARG=${IP_DEV}
-        - env_profile=${env_Dev}
+        - env_profile=${env_DEV}
     image: ms-eureka-service
     ports:
       - "8099:8099"
     environment:
-      - SPRING_PROFILES_ACTIVE=${env_Dev}
+      - SPRING_PROFILES_ACTIVE=${env_DEV}
       - CONFIG_SERVICE_URI=${IP_DEV}
 
     networks:
