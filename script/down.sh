@@ -1,8 +1,8 @@
 #!/bin/bash
 
-nom_reseau="blog-network"
 image="ms-eureka-service"
 mon_conteneur="eureka"
+nom_reseau="blog-network"
 
 delete_conteneur() {
   # suppression de l'images conteneuriser
@@ -26,16 +26,16 @@ delete_reseau() {
 
 }
 
-docker compose -f docker-compose-DEV.yml down
+docker compose -f ./docker/docker-compose-DEV.yml down
 
 # Vérifier si le conteneur n'est plus en cours d'exécution
-if [[ -z "$(docker ps -q -f 'status=exited' -f 'name=$mon_conteneur')" ]]; then
+if [[ -z "$(docker ps -q -f 'status=exited' -f 'name='$mon_conteneur)" ]]; then
   echo "Le conteneur n'est plus en cours d'exécution."
 
   # Recherche de l'images avant supression
   if [[ $(docker images -q $image) != "" ]]; then
 
-    echo "Suppression du conteneur et Build .jar"
+    echo "Suppression de l'images "
     delete_conteneur
     echo "Etat du réseau $nom_reseau :  "
     delete_reseau
