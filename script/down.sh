@@ -1,6 +1,8 @@
 #!/bin/bash
 
+nom_reseau="blog-network"
 image="ms-eureka-service"
+mon_conteneur="eureka"
 
 delete_conteneur() {
   # suppression de l'images conteneuriser
@@ -16,6 +18,14 @@ delete_conteneur() {
   fi
 }
 
+delete_reseau() {
+  docker network ls --filter "name=$nom_reseau"
+  if [[ $? -eq 0 ]]; then
+    echo "Le réseau n'est plus actif"
+  fi
+
+}
+
 docker compose -f docker-compose-DEV.yml down
 
 # Vérifier si le conteneur n'est plus en cours d'exécution
@@ -25,8 +35,11 @@ if [[ -z "$(docker ps -q -f 'status=exited' -f 'name=$mon_conteneur')" ]]; then
   # Recherche de l'images avant supression
   if [[ $(docker images -q $image) != "" ]]; then
 
-      echo "Suppression du conteneur et Build .jar"
-    delete_conteneur # supprime conteneur
+    echo "Suppression du conteneur et Build .jar"
+    delete_conteneur
+    echo "Etat du réseau $nom_reseau :  "
+    delete_reseau
+
   else
     echo "L'images : $image a déjà était supprimer "
   fi
@@ -34,7 +47,6 @@ if [[ -z "$(docker ps -q -f 'status=exited' -f 'name=$mon_conteneur')" ]]; then
 else
   echo "Le conteneur est toujours en cours d'exécution."
 fi
-
 
 # affichage
 echo "Liste des processus en cours d'exécution : "

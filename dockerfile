@@ -3,8 +3,8 @@ FROM maven:3.8.5-jdk-8-slim as build
 
 # Création du répertoire de travail
 WORKDIR /app
-COPY src /app/src
-COPY pom.xml /app/pom.xml
+COPY ./src /app/src
+COPY ./pom.xml /app/pom.xml
 
 # arguement venant du docker compose
 ARG CONFIG_SERVICE_URI_ARG
@@ -14,20 +14,16 @@ ARG env_profile
 ENV CONFIG_SERVICE_URI=$CONFIG_SERVICE_URI_ARG
 ENV SPRING_PROFILES_ACTIVE=$env_profile
 
-RUN mvn clean test package
+RUN mvn package
 
 # Image de base pour l'exécution de l'application
 FROM openjdk:8-jdk-alpine
-
 WORKDIR /app
 
 # Copie du jar de l'application
 COPY --from=build /app/target/*.jar /app/app.jar
 
-# Exposition du port 8099 pour l'application
 EXPOSE 8099
-
-# Lancement de l'application
 ENTRYPOINT [ "java","-jar","app.jar" ]
 
 # docker build -t eureka/latest .

@@ -3,11 +3,12 @@ version: '3.9'
 services:
   eureka:
     container_name: eureka
+    restart: always
     env_file:
       - .env
     build:
-      context: .
-      dockerfile: dockerfile-DEV
+      context: ../
+      dockerfile: dockerfile
       args:
         - CONFIG_SERVICE_URI_ARG=${IP_DEV}
         - env_profile=${env_DEV}
@@ -23,6 +24,6 @@ services:
 
 networks:
   spring-network:
-    driver: bridge
-
-# docker-compose up -d
+    name: blog-network
+    external: true    # indic qui ce connectera au réseau existant blog-network
+    driver: bridge    # indic le type de réseau docker
