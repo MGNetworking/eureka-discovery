@@ -2,6 +2,8 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Script](#Script)
+* [Dev](#Dev)
 
 ## General info
 
@@ -20,3 +22,21 @@ file and must be set with Maven goals. For example Maven goals and running sprin
 
 `$ mvn clean install -Pdev spring.run`
 
+## Script
+Le dossier script contient les fichiers suivant :
+* init.sh : permet de lancer le docker compose 
+* down.sh : permet l'arréter est la suppression du conteneur et l'images 
+* get_machine_ip.sh : permet de récupére l'IP 
+* reseau.sh : permet de voir le reseau bridge du conteneur 
+
+Pour pouvoir lancer ces fichier, il faut un interpréteur de type `UNIX`. 
+Le `Git bash` peux être utilisé, mais pas 100%.
+
+## Dev
+Pour créer dans intellij, un module de lancement :  
+`clean test -Dspring.profiles.active=dev spring-boot:run -Dspring-boot.run.jvmArguments=-Dspring.profiles.active=dev`
+![image info](./READMEpicture/img_1.png)
+
+Pour les test unitaire :
+`profiles.active=dev;CONFIG_SERVICE_URI=http://192.168.1.30:8089`
+![image info](./READMEpicture/img_2.png)
