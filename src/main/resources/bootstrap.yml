@@ -9,6 +9,6 @@
 spring:
   application.name: eureka
   config:
-    import: configserver:http://localhost:8089
+    import: configserver:${CONFIG_SERVICE_URI:http://localhost:8089}
   cloud:
     bootstrap.enabled: true
