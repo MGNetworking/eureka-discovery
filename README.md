@@ -2,34 +2,42 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Script](#Script)
 * [Dev](#Dev)
 
 ## General info
 
-The purpose of this micro service is to list all the micro-services of the server to which it is assigned. 
-All its micro services must register as soon as they are launched.
-
-this service cannot be used alone, since it works in duo with a service Gateway type
+Ce micro-service a pour but référencer tous les micro-services du projet.
+Cette liste est utilise par le micro-services `gateway` qui en gestion de faire suivre 
+les requêtes.
 
 ## Technologies
-this project is created with :
-* Spring boot version : 2.4.5
+Ce projet a était créer avec : `Spring boot version : 2.4.5`
 
 ## Setup 
-To run this project, you will need to set up the application-dev.properties environment
-file and must be set with Maven goals. For example Maven goals and running spring boot
+Pour exécuter ce projet en phase de développement, vous devrez utilisé les fichiers 
+script décrit dans la section plus bas.
 
-`$ mvn clean install -Pdev spring.run`
-
-## Script
 Le dossier script contient les fichiers suivant :
 * init.sh : permet de lancer le docker compose 
 * down.sh : permet l'arréter est la suppression du conteneur et l'images 
 * get_machine_ip.sh : permet de récupére l'IP 
 * reseau.sh : permet de voir le reseau bridge du conteneur 
 
-Pour pouvoir lancer ces fichier, il faut un interpréteur de type `UNIX`. 
+
+Les variables d'envrionnement du projet sont contenu dans le fichier `.env`. 
+Le contenu de la variable `IP_DEV` et génére par le script `get_machine_ip.sh` dans le but récupérer
+automatique l'idresse ip local de la machine. 
+
+Cette variable permet de transmettre `docker compose` la valeur de l'ip de la machine
+qui la transmettra au dockerfile pour la complation. Le dockerfile le récupére en argument 
+et la transfert en variable d'environnement. Puis le fichier `application.yml` récupére cette variable 
+d'environement pour connaitre l'emplacement du service de configuration.
+Ce service permet de récupére la configuation du service eureka.
+
+C'est pourquoi, pour facilité l'exécution en environenemt DEV, 
+les scripts init et down ont etait créer. 
+
+NB: Pour pouvoir lancer ces fichier, il faut un interpréteur de type `UNIX`.
 Le `Git bash` peux être utilisé, mais pas 100%.
 
 ## Dev
