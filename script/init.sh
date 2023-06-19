@@ -18,6 +18,7 @@ elif [[ $status == "exited" ]]; then
   docker container start $name_conteneur
 else
   echo "************************************"
+  ./script/get_machine_ip.sh
   echo "Création de l'images est du conteneur $name_conteneur"
   docker compose -f ./docker/docker-compose-DEV.yml build --no-cache
   docker compose -f ./docker/docker-compose-DEV.yml up -d
