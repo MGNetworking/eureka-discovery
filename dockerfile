@@ -14,6 +14,9 @@ ARG env_profile
 ENV CONFIG_SERVICE_URI=$CONFIG_SERVICE_URI_ARG
 ENV SPRING_PROFILES_ACTIVE=$env_profile
 
+RUN echo "CONFIG_SERVICE_URI: $CONFIG_SERVICE_URI"
+RUN echo "SPRING_PROFILES_ACTIVE: $SPRING_PROFILES_ACTIVE"
+
 RUN mvn package
 
 # Image de base pour l'exécution de l'application
