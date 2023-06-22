@@ -24,9 +24,13 @@ delete_reseau() {
 
   # Vérifie si le conteneur est actif
   if docker ps -f "network=blog-network" -f "status=running" --format '{{.ID}}' | grep -q .; then
-    echo "Le conteneur est actif sur le réseau bridge (blog-network)."
+    echo "************************************"
+    echo "Un conteneur est toujours actif sur le réseau bridge (blog-network)."
+    echo "Le réseau blog-network ne peut être supprimer."
   else
-    echo "Le conteneur n'est pas actif sur le réseau bridge (blog-network)."
+    echo "************************************"
+    echo "Les conteneurs ne sont plus actif sur le réseau bridge (blog-network)."
+    echo "Le réseau blog-network peut être supprimer "
     docker network rm $nom_reseau
     docker network ls --filter "name=$nom_reseau"
 
@@ -41,22 +45,17 @@ delete_reseau() {
 
 }
 
-docker compose -f ./docker/docker-compose.yml down
+docker compose -f ./docker/docker-compose-DEV.yml down
 
 # Vérifier si le conteneur n'est plus en cours d'exécution
 if [[ -z "$(docker ps -q -f 'status=exited' -f 'name='$mon_conteneur)" ]]; then
   echo "************************************"
   echo "Le conteneur n'est plus en cours d'exécution."
 
-  # Recherche de l'images avant supression
+  # Recherche de l'images avant suppression
   if [[ $(docker images -q $image) != "" ]]; then
 
-    echo "************************************"
-    echo "Suppression de l'images "
     delete_conteneur
-
-    echo "************************************"
-    echo "Etat du réseau $nom_reseau :  "
     delete_reseau
 
   else
@@ -71,11 +70,11 @@ fi
 
 # affichage
 echo "************************************"
-echo "Liste des processus en cours d'exécution : "
+echo "Liste des processus en cours d'exécution "
 docker ps -a
 
 echo "************************************"
-echo "Liste des images déployées : "
+echo "Liste des images déployées "
 docker images
 
 echo "************************************"
