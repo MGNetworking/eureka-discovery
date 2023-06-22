@@ -3,6 +3,8 @@
 
 destination="docker/.env"
 
+echo "lecture du script Get_IP_Config_Service.sh "
+
 # Récupération de l'adresse IP de la machine
 IP=$(hostname -I | awk '{print $1}')
 echo "Adresse IP : ${IP}"

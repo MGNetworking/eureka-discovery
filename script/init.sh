@@ -8,7 +8,7 @@ DOCKER_STATUS=$?
 if [ $DOCKER_STATUS -eq 0 ]; then
   echo "Docker est en cours d'exécution."
 
-  status=$(docker inspect --format='{{.State.Status}}' $name_conteneur)
+  status=$(docker inspect --format='{{.State.Status}}' $name_conteneur > /dev/null 2>&1)
 
   # si déjà encours d'ex
   if [[ $status == "running" ]]; then
