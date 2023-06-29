@@ -4,15 +4,15 @@ services:
   eureka:
     container_name: eureka
     restart: always
-    env_file:
-      - .env
+    image: ms-eureka-service:${version-latest}
     build:
       context: ../
       dockerfile: dockerfile
       args:
         - CONFIG_SERVICE_URI_ARG=${IP_DEV}
         - env_profile=${env_DEV}
-    image: ms-eureka-service
+    env_file:
+      - .env
     ports:
       - "8099:8099"
     environment:
