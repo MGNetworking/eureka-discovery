@@ -4,7 +4,7 @@ services:
   eureka:
     container_name: eureka
     restart: always
-    image: ms-eureka-service:${version-latest}
+    image: ms-eureka-service:${version:-latest}
     build:
       context: ../
       dockerfile: dockerfile
