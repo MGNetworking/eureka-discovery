@@ -15,7 +15,7 @@
     <name>ms-eureka</name>
     <groupId>org.ghoverblog.ovh</groupId>
     <artifactId>ms-eureka</artifactId>
-    <version>1.0.0-V</version>
+    <version>1.0.0</version>
     <description>Register for micro service</description>
 
     <properties>
