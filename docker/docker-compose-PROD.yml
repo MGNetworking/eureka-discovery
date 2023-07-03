@@ -4,6 +4,7 @@ services:
   eureka:
     container_name: eureka
     restart: always
+    image: ms-eureka-service:${version:-latest}
     env_file:
       - .env
     build:
@@ -12,7 +13,6 @@ services:
       args:
         - CONFIG_SERVICE_URI_ARG=${IP_PROD}
         - env_profile=${env_PROD}
-    image: ms-eureka-service
     ports:
       - "8099:8099"
     environment:

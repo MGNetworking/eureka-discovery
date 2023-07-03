@@ -8,7 +8,7 @@ DOCKER_STATUS=$?
 if [ $DOCKER_STATUS -eq 0 ]; then
   echo "Docker est en cours d'exécution."
 
-  status=$(docker inspect --format='{{.State.Status}}' $name_conteneur > /dev/null 2>&1)
+  status=$(docker inspect --format='{{.State.Status}}' $name_conteneur >/dev/null 2>&1)
 
   # si déjà encours d'ex
   if [[ $status == "running" ]]; then
@@ -29,8 +29,11 @@ if [ $DOCKER_STATUS -eq 0 ]; then
     # si n'est pas encor créer
     echo "************************************"
     ./script/Get_IP_Config_Service.sh
+    ip_config_service=$?
 
-    if [[ $? -eq 0 ]]; then  #  0 = true
+    ./script/version.sh
+
+    if [[ $ip_config_service -eq 0 ]]; then # 0 = true
       echo "Création de l'images est du conteneur $name_conteneur"
       docker compose -f ./docker/docker-compose-DEV.yml build --no-cache
       docker compose -f ./docker/docker-compose-DEV.yml up -d
