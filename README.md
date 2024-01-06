@@ -58,9 +58,9 @@ le fichier `init.sh`
 
 Pour créer dans intellij, un module de lancement :  
 `clean test -Dspring.profiles.active=dev spring-boot:run -Dspring-boot.run.jvmArguments=-Dspring.profiles.active=dev`
-![image info](./READMEpicture/img_1.png)
 
-Pour les test unitaire :
+
+Pour les tests unitaires :
 `profiles.active=dev;CONFIG_SERVICE_URI=http://192.168.1.30:8089`
-![image info](./READMEpicture/img_2.png)
+
 
