@@ -2,7 +2,7 @@
 
 image="ms-eureka-service"
 mon_conteneur="eureka"
-nom_reseau="blog-network"
+nom_reseau="sso_bd"
 
 delete_conteneur() {
   # suppression de l'images conteneuriser
