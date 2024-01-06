@@ -24,10 +24,6 @@ services:
 networks:
   keycloak_postgre:
     name: sso_bd
-<<<<<<< HEAD
     external: true  # indic qu'il est déjà present
     driver: bridge  # Réseau docker isolé
-=======
-    external: true    # indic qui ce connectera au réseau existant blog-network
-    driver: bridge    # indic le type de réseau docker
->>>>>>> preprod
+
