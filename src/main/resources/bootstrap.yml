@@ -1,14 +1,9 @@
-# Localisation du fichier de configuration #############################################################################
-# Ce fichier permet de récupérer les properties du projet, sa localisation doit tenir compte de l'environement utilisé
-# Si l'environement utilisé est un conteneur docker l'ip localhost est déconseiller
-# Vous devriez utilise directement l'ip local type 192.168.x.x ou un nom de domaine. Dans le contraire,
-# si le conteneur docker n'a pas correctement configurer l'environement réseau les requêtes localhost
-# seront contenu dans le conteneur.
-# La variable => ${CONFIG_SERVICE_URI} et récupérer dans le docker compose
-########################################################################################################################
+########## Localisation du fichier de configuration
+# exemple : http://localhost:8089/eureka/dev
 spring:
-  application.name: eureka
-  config:
-    import: configserver:${CONFIG_SERVICE_URI:http://localhost:8089}
+  application:
+    name: eureka
   cloud:
-    bootstrap.enabled: true
+    config:
+      uri:
+        - ${CONFIG_SERVICE_URI_host:http://ms-configuration:8089}
