@@ -6,11 +6,11 @@ services:
     env_file:
       - .env
     deploy:
-      replicas: 1
-      resources:
-        limits: # spécifie les limites de ressources pour le service
-          cpus: '0.5'   # limite maximale (CPU) '0.5' signifierait 50% d'utilisation maximale du CPU
-          memory: 512M  # limite maximale de la mémoire RAM
+      replicas: 2
+#      resources:
+#        limits: # spécifie les limites de ressources pour le service
+#          cpus: '0.5'   # limite maximale (CPU) '0.5' signifierait 50% d'utilisation maximale du CPU
+#          memory: 512M  # limite maximale de la mémoire RAM
       labels:
         - "lb.service=ms-eureka-service"
       update_config: #  Configure la stratégie de mise à jour.
