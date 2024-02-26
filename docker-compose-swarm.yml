@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   ms-eureka:
-    image: sonatype-nexus.backhole.ovh/ms-eureka-service:1.0.0
+    image: sonatype-nexus.backhole.ovh/ms-eureka-service:${IMAGE_VERSION:-latest}
     env_file:
       - .env
     deploy:
