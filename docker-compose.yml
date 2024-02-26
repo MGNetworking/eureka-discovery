@@ -4,24 +4,11 @@ services:
   ms-eureka:
     container_name: ms-eureka
     restart: always
-    image: ms-eureka-service:${version:-latest}
+    image: sonatype-nexus.backhole.ovh/ms-eureka-service:${IMAGE_VERSION:-latest}
     env_file:
       - .env
     build:
       context: .
       dockerfile: Dockerfile
-      args: # pour la construction de l'image
-        - SPRING_PROFILES_ACTIVE=${profile_actif_dev}
-        - CONFIG_SERVICE_URI=${service_config_host_dev}
     ports:
       - "8099:8099"
-    environment: # pour la construction du conteneur
-      - SPRING_PROFILES_ACTIVE=${profile_actif_dev}
-      - CONFIG_SERVICE_URI=${service_config_docker}
-    networks:
-      - keycloak_postgre
-
-networks:
-  keycloak_postgre:
-    name: sso_bd
-    driver: bridge    # indic le type de réseau docker
