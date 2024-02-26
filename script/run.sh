@@ -1,38 +1,103 @@
 #!/bin/bash
 
-name_conteneur="eureka"
+# export des variable du fichier .env
+export $(cat .env)
+
+env=("Run stack $STACK_NAME" "Compilation / build and Run stack $STACK_NAME" )
+echo "Lancement de la compilation (Mode Dev) "
+echo "Choisissez votre type de compilation :"
+
+affichage=""
+for i in "${!env[@]}"; do
+  affichage+="[$i] ${env[$i]} \n"
+done
+
+# Affiche a l'utilisateur tout des options disponibles
+echo -e "$affichage"
+read choix
+
+trouver=false
+selection=""
+
+# recherche du choix sélectionné
+if [ -n "${env[$choix]}" ]; then
+  echo "Vous avez choisi : ${env[$choix]}"
+  selection=${env[$choix]}
+  trouver=true
+fi
+
+run_stack(){
+
+    if [[ -z $(docker images --filter "reference=$DOCKER_IMAGE_NAME"  | grep "$DOCKER_IMAGE_NAME" ) ]]; then
+
+    echo "l'images n'a pas etait trouver vous ne pouvez pas créer la stack"
+    exit 1
+    fi
+
+    echo "deploy de la stack : $STACK_NAME"
+    docker stack deploy -c ./docker-compose-swarm.yml $STACK_NAME
+
+    echo "Liste des stack"
+    docker service ls
+
+}
+
+compilation_Maven(){
+
+    echo "Compilation du projet $STACK_NAME via Maven"
+
+    # Variable d'environnement
+    export CONFIG_SERVICE_URI_host="http://192.168.1.68:8089"
+    #mvn clean package "-Dspring-boot.run.jvmArguments=-Dspring.profiles.active=dev"
+    mvn clean package -Dspring.profiles.active=dev
+
+    echo "Création de l'images : $STACK_NAME"
+    docker compose -f docker-compose.yml build --no-cache
+
+    echo "deploy de la stack du service : $STACK_NAME"
+    docker stack deploy -c ./docker-compose-swarm.yml $STACK_NAME
+
+    echo "Liste des stack"
+    docker service ls
+
+}
 
 docker info >/dev/null 2>&1
 DOCKER_STATUS=$?
 
-# vérifier que docker est en cours d'exécution
+
 if [ $DOCKER_STATUS -eq 0 ]; then
   echo "Docker est en cours d'exécution."
 
-  status=$(docker inspect --format='{{.State.Status}}' $name_conteneur >/dev/null 2>&1)
+  status=$(docker inspect --format='{{.State.Status}}' $STACK_NAME >/dev/null 2>&1)
 
-  # vérifier que le conteneur est en cours d'exécution
+  # Vérifie l'états du service
   if [[ $status == "running" ]]; then
 
-    timeUTC=$(docker inspect --format='{{.State.StartedAt}}' $name_conteneur)
+    timeUTC=$(docker inspect --format='{{.State.StartedAt}}' $STACK_NAME)
     conversion=$(date -d $timeUTC)
-    echo "************************************"
-    echo "Le conteneur $name_conteneur est en cour d'exécution depuis : $conversion"
-    docker compose logs -f
 
-    # si a l'arrêt
-  elif [[ $status == "exited" ]]; then
+    # Si il est toujours en cours d'exécution
     echo "************************************"
-    echo "Lancement du conteneur $name_conteneur"
-    docker container rm $name_conteneur
+    echo "Le conteneur $STACK_NAME est en cour d'exécution depuis : $conversion"
+    echo "Suppression du conteneur $STACK_NAME"
+    docker compose -f docker-compose.yml logs -f
+
+  elif [[ $status == "exited" ]]; then
+
+    # Si il est toujours en cours d'exécution
+    echo "************************************"
+    echo "le conteneur $STACK_NAME à été stoppé, mais et toujours actif"
+    echo "Suppression du conteneur $STACK_NAME"
+    docker container start $STACK_NAME
 
   else
+      if [ $choix -eq 0 ]; then
+        run_stack
 
-    echo "Création de l'images est du conteneur $name_conteneur"
-    docker compose build --no-cache
-    docker compose up -d
-    docker compose logs -f
-
+      elif [ $choix -eq 1  ]; then
+        compilation_Maven
+      fi
   fi
 
 else
