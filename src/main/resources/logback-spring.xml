@@ -1,5 +1,7 @@
 <configuration>
 
+    <logger name="org.springframework.cloud.netflix.eureka" level="DEBUG" />
+
     <!-- Déclaration des appender et rolling policies (la rotation des fichiers de log) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>./logs/eureka.log</file>
