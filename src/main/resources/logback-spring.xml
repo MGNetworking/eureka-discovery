@@ -1,15 +1,14 @@
 <configuration>
 
-
     <!-- Déclaration des appender et rolling policies (la rotation des fichiers de log) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/config.log</file>
+        <file>./logs/eureka.log</file>
 
         <!-- gestion de la rotation fichier de logs -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
 
             <!-- Emplacement du fichier de log -->
-            <fileNamePattern>./logs/config.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>./logs/eureka.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
 
             <maxFileSize>10MB</maxFileSize>     <!-- Taille maximale de chaque fichier de log -->
             <maxHistory>7</maxHistory>          <!-- Nombre de fichiers de log à conserver -->
@@ -23,9 +22,17 @@
         </encoder>
     </appender>
 
+    <!-- Configuration pour la console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <!-- Configuration du niveau racine -->
     <root level="info">
         <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 </configuration>
