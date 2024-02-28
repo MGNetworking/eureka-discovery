@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     deploy:
-      replicas: 2
+      replicas: 1
 #      resources:
 #        limits: # spécifie les limites de ressources pour le service
 #          cpus: '0.5'   # limite maximale (CPU) '0.5' signifierait 50% d'utilisation maximale du CPU
