@@ -14,7 +14,7 @@ pipeline {
         SERVICE_CONFIG_URI = ""
         IMAGE_TAG = ""
         // Get credentials to connection serveur
-        Preprod_CREDS = credentials('PROD')
+        prod_CREDS = credentials('PROD')
 
     }
 
@@ -46,8 +46,8 @@ pipeline {
                     echo("Branche en cour $env.BRANCH_NAME ")
 
                     remote = configurerServeur.config("${env.BRANCH_NAME}", '192.168.1.27', true)
-                    remote.user = env.Preprod_CREDS_USR
-                    remote.password = env.Preprod_CREDS_PSW
+                    remote.user = env.prod_CREDS_USR
+                    remote.password = env.prod_CREDS_PSW
                     SERVICE_CONFIG_URI = "http://${remote.host}:8089"
                     echo "Nouvelle version de l'application : ${IMAGE_VERSION}";
                 }
@@ -68,7 +68,7 @@ pipeline {
                                 echo("Connection au dépôt depuis le serveur réussi : Login Succeeded")
                     }
 
-                    echo("Mise à jours du projet ms-article sur le serveur Preprod")
+                    echo("Mise à jours du projet ms-article sur le serveur prod")
                     String commande = sshCommand remote: remote, failOnError: false, sudo: false,
                             command: "cd /home/max/docker_home/ms-eureka && git checkout main &&  git pull origin main"
 
@@ -267,7 +267,7 @@ pipeline {
                 echo("Échec du build ");
 
                 // Si update effectuer
-                if (env.ROLLBACK) {
+                if (!env.ROLLBACK) {
                     echo("ROLLBACK ...");
                     String rollbackResult = sshCommand remote: remote, command: "docker service rollback ${NAME_SERVICE}"
                     echo("Sorti ROLLBACK : ${rollbackResult}")
