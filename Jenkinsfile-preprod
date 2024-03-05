@@ -109,7 +109,7 @@ pipeline {
             steps {
                 script {
                     echo("Compilation du projet ms-configuration")
-                    sh("mvn clean package -Dspring.profiles.active=preprod")
+                    sh("mvn clean package -Dspring.profiles.active=${env.BRANCH_NAME} -DSERVICE_CONFIG_DOCKER=${SERVICE_CONFIG_URI}")
                 }
             }
         }
@@ -215,8 +215,8 @@ pipeline {
 
                     for (int index = 0; index < 10; index++) {
 
-                        echo("Requet CURL n° $index du service : ${NAME_SERVICE} a l'adresse : ${SERVICE_CONFIG_URI}/actuator/health ")
-                        def result = sh(script: "curl -s ${SERVICE_CONFIG_URI}/actuator/health", returnStatus: true)
+                        echo("Requet CURL n° $index du service : ${NAME_SERVICE} a l'adresse : http://${remote.host}:${PORT}/actuator/health")
+                        def result = sh(script: "curl -s http://${remote.host}:${PORT}/actuator/health", returnStatus: true)
 
                         echo("result ${result}")
 
