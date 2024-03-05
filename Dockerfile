@@ -7,6 +7,12 @@ RUN apk --no-cache add curl jq
 WORKDIR /app
 COPY ./target/*.jar /app/app.jar
 
+# Création du dossier de logs
+RUN mkdir /app/logs
+
+# Créer le fichier de log de santer
+RUN touch /app/logs/healthcheck.log
+
 # Copie des scripts
 COPY ./script/wait_for_config.sh /app
 COPY ./script/healthcheck.sh /app
