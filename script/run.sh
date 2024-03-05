@@ -47,8 +47,7 @@ compilation_Maven(){
     echo "Compilation du projet $STACK_NAME via Maven"
 
     # Variable d'environnement
-    export CONFIG_SERVICE_URI_host="http://192.168.1.68:8089"
-    #mvn clean package "-Dspring-boot.run.jvmArguments=-Dspring.profiles.active=dev"
+    export SERVICE_CONFIG_DOCKER="http://192.168.1.68:8089"
     mvn clean package -Dspring.profiles.active=dev
 
     echo "Création de l'images : $STACK_NAME"
