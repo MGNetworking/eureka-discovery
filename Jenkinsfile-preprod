@@ -11,6 +11,7 @@ pipeline {
         DOMAIN_REGISTRY = "sonatype-nexus.backhole.ovh"
         DEPLOY = false
         ROLLBACK = false
+        PATH_HOME_SERVER = ""
         SERVICE_CONFIG_URI = ""
         IMAGE_TAG = ""
         // Get credentials to connection serveur
@@ -49,6 +50,9 @@ pipeline {
                     remote.user = env.Preprod_CREDS_USR
                     remote.password = env.Preprod_CREDS_PSW
                     SERVICE_CONFIG_URI = "http://${remote.host}:8089"
+                    // le path du dossier vers le serveur distant
+                    PATH_HOME_SERVER = "/home/max/docker_home"
+
                     echo "Nouvelle version de l'application : ${IMAGE_VERSION}";
                 }
             }
@@ -68,9 +72,9 @@ pipeline {
                                 echo("Connection au dépôt depuis le serveur réussi : Login Succeeded")
                     }
 
-                    echo("Mise à jours du projet ms-article sur le serveur Preprod")
+                    echo("Mise à jours du projet ms-eureka sur le serveur Preprod")
                     String commande = sshCommand remote: remote, failOnError: false, sudo: false,
-                            command: "cd /home/max/docker_home/ms-eureka && git checkout ${env.BRANCH_NAME} &&  git pull origin ${env.BRANCH_NAME}"
+                            command: "cd ${PATH_HOME_SERVER}/ms-eureka && git checkout ${env.BRANCH_NAME} &&  git pull origin ${env.BRANCH_NAME}"
 
                     echo("sorti : $commande")
                 }
@@ -108,7 +112,7 @@ pipeline {
             }
             steps {
                 script {
-                    echo("Compilation du projet ms-configuration")
+                    echo("Compilation du service ms-eureka")
                     sh("mvn clean package -Dspring.profiles.active=${env.BRANCH_NAME} -DSERVICE_CONFIG_DOCKER=${SERVICE_CONFIG_URI}")
                 }
             }
@@ -148,16 +152,6 @@ pipeline {
             steps {
                 script {
 
-                    String networkOutput = sshCommand remote: remote, failOnError: false, sudo: false,
-                            command: "docker inspect spring-api"
-                    echo("Le teste du réseau spring-api : ${networkOutput}")
-
-                    if (!networkOutput.contains("No such object")) {
-                        echo("Le réseau existe : ${networkOutput}")
-                    } else {
-                        echo("Le réseau n'existe pas : ${networkOutput}")
-                    }
-
                     if (IMAGE_TAG != "") {
 
                         // pull depuis preprod
@@ -169,7 +163,7 @@ pipeline {
                                 error("Erreur lors du pull de l'image.")
                         try {
                             def deployResult = sshCommand remote: remote, failOnError: false, sudo: false,
-                                    command: "cd /home/max/docker_home/ms-eureka && export \$(cat .env) && " +
+                                    command: "cd ${PATH_HOME_SERVER}/ms-eureka && export \$(cat .env) && " +
                                             "docker stack deploy -c ./docker-compose-swarm-preprod.yml ${env.STACK_NAME}"
 
                             echo("Sorti deployResult : ${deployResult}")
@@ -242,7 +236,6 @@ pipeline {
     post {
         always {
             script {
-                echo "Fin de " + (env.DEPLOY ? "La mise en service " : "la mise en service")
                 echo("Logout du depot sur preprod ...")
 
                 String loginResult = sshCommand remote: remote, command: "docker logout ${DOMAIN_REGISTRY}"
@@ -255,20 +248,26 @@ pipeline {
         }
         success {
             script {
-                echo('Réussite du build')
+                echo "Fin " + (env.DEPLOY ? "du déployement de la stack " : "de la mise à jour de la stack ")
             }
         }
         failure {
             script {
-
                 echo("Échec du build ");
-
                 // Si update effectuer
                 if (env.ROLLBACK) {
                     echo("ROLLBACK ...");
                     String rollbackResult = sshCommand remote: remote, command: "docker service rollback ${NAME_SERVICE}"
                     echo("Sorti ROLLBACK : ${rollbackResult}")
 
+                    echo("Delete Images ${env.IMAGE_TAG} du serveur")
+                    sh("docker rmi ${env.IMAGE_TAG}")
+
+                }else {
+                    echo("Delete Images ${env.IMAGE_TAG} du serveur")
+                    sh("docker rmi ${env.IMAGE_TAG}")
+                    echo("Delete stack")
+                    sh("docker stack rm ${env.STACK_NAME}")
                 }
 
             }
