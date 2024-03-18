@@ -49,7 +49,7 @@ pipeline {
                             "${env.DOCKER_IMAGE_NAME}-prod:${env.IMAGE_VERSION}",
                             "./docker-compose-swarm-prod.yml",
                             '/usr/bin',
-                            '/home/max/docker_home/ms-article',
+                            '/home/max/docker_home/ms-eureka',
                             env.STACK_NAME)
 
                     // les données de connection serveur
