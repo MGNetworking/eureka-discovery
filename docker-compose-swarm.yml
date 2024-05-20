@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     environment: # Variable utilise dans le fichier wait_for_config.sh
-      - PROFILE_ACTIF_SPRING=dev
+      PROFILE_ACTIF_SPRING: ${PROFILES}
     deploy:
       replicas: 1
 #      resources:
