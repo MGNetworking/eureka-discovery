@@ -40,6 +40,10 @@ run_stack(){
     echo "Liste des stack"
     docker service ls
 
+    echo "***************"
+    echo "Lancement du service eureka_ms-eureka"
+    docker service logs -f eureka_ms-eureka
+
 }
 
 compilation_Maven(){
@@ -59,6 +63,10 @@ compilation_Maven(){
 
     echo "Liste des stack"
     docker service ls
+
+    echo "***************"
+    echo "Lancement du service eureka_ms-eureka"
+    docker service logs -f eureka_ms-eureka
 
 }
 
