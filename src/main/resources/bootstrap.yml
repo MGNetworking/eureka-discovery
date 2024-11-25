@@ -7,3 +7,4 @@ spring:
     config:
       uri:
         - ${SERVICE_CONFIG_DOCKER:http://ms-configuration:8089}
+      label: main # Branche Git par défaut
